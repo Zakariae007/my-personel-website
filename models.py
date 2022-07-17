@@ -14,3 +14,10 @@ class Admin(BaseModel):
     email : str
     password: str
     gender: Gender
+
+class AdminUpdateRequest(BaseModel):
+    firstName : Optional[str]
+    lastName : Optional[str]
+    email : Optional[str]
+    password: Optional[str]
+    gender: Optional[Gender]
