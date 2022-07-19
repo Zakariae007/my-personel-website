@@ -22,7 +22,7 @@ class AdminUpdateRequest(BaseModel):
     email : Optional[EmailStr]
     password: Optional[str]
     gender: Optional[Gender]
-
+ 
 class skill(BaseModel):
     name : str = Field(...)
     skillType : str = Field(...)
