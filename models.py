@@ -34,3 +34,4 @@ class experience(BaseModel):
     endDate : date = Field(...)
     period : str = Field(...)
     description : str = Field(...)
+    skills: str = Field(...)
