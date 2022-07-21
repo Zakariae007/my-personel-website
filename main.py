@@ -2,8 +2,19 @@ from typing import List
 from uuid import UUID
 from fastapi import FastAPI, HTTPException
 from models import Admin, AdminUpdateRequest, Gender
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = ['https://localhost:3000']
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins = origins,
+    allow_credentials = True,
+    allow_methods = ["*"],
+    allow_headers = ["*"]
+)
 
 db: List[Admin] = [
     Admin(
