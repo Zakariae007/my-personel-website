@@ -1,8 +1,11 @@
 from models import Admin
+import os
+from dotenv import load_dotenv
 
 import motor.motor_asyncio 
+load_dotenv()
 
-connection_string = 'mongodb+srv://Zakariae:Zakariae@cluster0.f1pgg.mongodb.net/?retryWrites=true&w=majority'
+connection_string = os.getenv('DB_URL')
 
 client = motor.motor_asyncio.AsyncIOMotorClient(connection_string, tls=True, tlsAllowInvalidCertificates=True)
 
