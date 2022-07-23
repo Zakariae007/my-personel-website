@@ -9,7 +9,7 @@ class Gender(str, Enum):
     female = "female"
 
 class Admin(BaseModel):
-    id: Optional[UUID] = uuid4()
+    id: str = Field(...)
     firstName : str = Field(...)
     lastName : str = Field(...)
     email : EmailStr = Field(...)

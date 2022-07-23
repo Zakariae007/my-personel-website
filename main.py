@@ -13,7 +13,6 @@ from database import (
 )
 
 
-
 origins = ['https://localhost:3000']
 
 app.add_middleware(
