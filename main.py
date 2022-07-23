@@ -1,15 +1,21 @@
 from typing import List
 from uuid import UUID
 from fastapi import FastAPI, HTTPException
-from models import Admin, AdminUpdateRequest, Gender
+from models import Admin, AdminUpdateRequest, Gender, Skill
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.encoders import jsonable_encoder
 
 app = FastAPI()
 
-from database import (
+from adminRepository import (
     fetch_one_admin,
     fetch_all_admins,
     register_admin
+)
+
+from skillRepository import (
+    fetch_all_skills,
+    add_skill
 )
 
 
@@ -54,9 +60,16 @@ async def get_all_admins():
 
 # Create a new admin
 @app.post("/api/admins")
-async def register_admin(admin: Admin): 
-    db.append(admin)
-    return {"id": admin.id}
+async def create_admin(admin: Admin):
+    document = jsonable_encoder(admin)
+    new_admin = await register_admin(document)
+    if new_admin is not None: 
+        return {"message": "User created successfully"}
+    
+    raise HTTPException(
+        status_code= 404,
+        detail= "could not create the admin"
+    ) 
 
 # Delete an existing admin
 @app.delete("/api/admins/{admin_id}")
@@ -103,3 +116,22 @@ async def get_admin_by_id(admin_id: str):
         status_code= 404,
         detail= f"user with id: {admin_id} does not exists"
     )
+
+@app.get("/api/skills")
+async def get_all_skills():
+    response = await fetch_all_skills()
+    return response
+
+@app.post("/api/skills")
+async def add_new_skill(skill: Skill):
+    document = jsonable_encoder(skill)
+    new_skill = await add_skill(document)
+
+    if new_skill is not None: 
+        return {"message": "Skill added successfully"}
+    
+    raise HTTPException(
+        status_code= 404,
+        detail= "could not add the skill"
+    ) 
+

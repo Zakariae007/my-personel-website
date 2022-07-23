@@ -9,7 +9,6 @@ class Gender(str, Enum):
     female = "female"
 
 class Admin(BaseModel):
-    id: str = Field(...)
     firstName : str = Field(...)
     lastName : str = Field(...)
     email : EmailStr = Field(...)
@@ -23,11 +22,11 @@ class AdminUpdateRequest(BaseModel):
     password: Optional[str]
     gender: Optional[Gender]
  
-class skill(BaseModel):
+class Skill(BaseModel):
     name : str = Field(...)
-    skillType : str = Field(...)
+    type : str = Field(...)
 
-class experience(BaseModel):
+class Experience(BaseModel):
     title : str = Field(...) 
     company : str = Field(...)
     startDate : date = Field(...)
