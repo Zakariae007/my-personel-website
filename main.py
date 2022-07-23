@@ -6,6 +6,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+from database import (
+    fetch_one_admin,
+    fetch_all_admins,
+    register_admin
+)
+
+
+
 origins = ['https://localhost:3000']
 
 app.add_middleware(
@@ -18,7 +26,7 @@ app.add_middleware(
 
 db: List[Admin] = [
     Admin(
-        id= UUID("c55cca20-f511-49b7-9df7-81fea762d5bf"),
+        id= "62dbf33237547ddcc00ca9ba",
         firstName= "Zakariae", 
         lastName= "Barakat", 
         email= "Zakariae.barakat@gmail.com", 
@@ -26,7 +34,7 @@ db: List[Admin] = [
         gender= Gender.male, 
     ),
     Admin(
-        id= UUID("90c1f42d-4cd4-4aac-ab9b-a14b2b6deb52"),
+        id= "96dbf33237547ddcc00ca9ba",
         firstName= "test", 
         lastName= "test", 
         email= "test@gmail.com", 
@@ -41,8 +49,9 @@ def root():
 
 # Get all the admins
 @app.get("/api/admins")
-async def get_all_admins(): 
-    return db;
+async def get_all_admins():
+    admins = await fetch_all_admins()
+    return admins
 
 # Create a new admin
 @app.post("/api/admins")
@@ -86,13 +95,10 @@ async def update_admin(new_admin: AdminUpdateRequest, admin_id: UUID):
 
 # Get specific admin
 @app.get("/api/admins/{admin_id}")
-async def get_admin_by_id(admin_id: UUID):
-    for user in db: 
-        if user.id == admin_id:
-            return {
-                "message": "user found",
-                "data": user
-            }
+async def get_admin_by_id(admin_id: str):
+    response = await fetch_one_admin(admin_id)
+    if response:
+        return response
 
     raise HTTPException(
         status_code= 404,
