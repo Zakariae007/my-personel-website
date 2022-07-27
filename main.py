@@ -15,7 +15,8 @@ from adminRepository import (
 
 from skillRepository import (
     fetch_all_skills,
-    add_skill
+    add_skill,
+    delete_skill
 )
 
 
@@ -133,5 +134,16 @@ async def add_new_skill(skill: Skill):
     raise HTTPException(
         status_code= 404,
         detail= "could not add the skill"
+    ) 
+
+@app.delete("/api/skills/{skill_id}")
+async def delete_existing_skill(skill_id: str):
+    response = await delete_skill(skill_id)
+    if response is not None:
+        return {"message": "Skill was deleted successfully"}
+
+    raise HTTPException(
+        status_code= 404,
+        detail= "could not delete the skill"
     ) 
 
