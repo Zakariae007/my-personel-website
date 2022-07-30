@@ -11,7 +11,8 @@ from adminRepository import (
     fetch_one_admin,
     fetch_all_admins,
     register_admin,
-    modify_admin
+    modify_admin,
+    delete_admin
 )
 
 from skillRepository import (
@@ -73,18 +74,6 @@ async def create_admin(admin: Admin):
         detail= "could not create the admin"
     ) 
 
-# Delete an existing admin
-@app.delete("/api/admins/{admin_id}")
-async def delete_admin(admin_id: str):
-    for user in db:
-        if user.id == admin_id:
-            db.remove(user)
-            return {"message": "user deleted successfully"}
-    raise HTTPException(
-        status_code= 404,
-        detail= f"user with id: {admin_id} does not exists"
-    )
-
 # Update an existing admin
 @app.put("/api/admins/{admin_id}")
 async def update_admin( admin_id: str, admin: Admin):
@@ -103,6 +92,17 @@ async def get_admin_by_id(admin_id: str):
     response = await fetch_one_admin(admin_id)
     if response:
         return response
+
+    raise HTTPException(
+        status_code= 404,
+        detail= f"user with id: {admin_id} does not exists"
+    )
+
+@app.delete("/api/admins/{admin_id}")
+async def delete_existing_admin(admin_id: str):
+    response = await delete_admin(admin_id)
+    if response:
+        return {"message": "user deleted successfully"}
 
     raise HTTPException(
         status_code= 404,

@@ -41,6 +41,12 @@ async def modify_admin(id, data):
         print("Updated admin : ", updated_admin)
         return updated_admin
 
+async def delete_admin(id):
+    found_admin = await admin_collection.find_one({"_id": ObjectId(id)})
+    if found_admin:
+        admin = await admin_collection.delete_one({"_id": ObjectId(id)})
+        return admin
+
     
 
     
