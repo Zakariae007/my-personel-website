@@ -14,13 +14,6 @@ class Admin(BaseModel):
     email : EmailStr = Field(...)
     password: str = Field(...)
     gender: Gender = Field(...)
-
-class AdminUpdateRequest(BaseModel):
-    firstName : Optional[str]
-    lastName : Optional[str]
-    email : Optional[EmailStr]
-    password: Optional[str]
-    gender: Optional[Gender]
  
 class Skill(BaseModel):
     name : str = Field(...)

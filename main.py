@@ -1,7 +1,7 @@
 from typing import List
 from uuid import UUID
 from fastapi import FastAPI, HTTPException
-from models import Admin, AdminUpdateRequest, Gender, Skill
+from models import Admin, Gender, Skill
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 
@@ -10,7 +10,8 @@ app = FastAPI()
 from adminRepository import (
     fetch_one_admin,
     fetch_all_admins,
-    register_admin
+    register_admin,
+    modify_admin
 )
 
 from skillRepository import (
@@ -74,7 +75,7 @@ async def create_admin(admin: Admin):
 
 # Delete an existing admin
 @app.delete("/api/admins/{admin_id}")
-async def delete_admin(admin_id: UUID):
+async def delete_admin(admin_id: str):
     for user in db:
         if user.id == admin_id:
             db.remove(user)
@@ -86,20 +87,10 @@ async def delete_admin(admin_id: UUID):
 
 # Update an existing admin
 @app.put("/api/admins/{admin_id}")
-async def update_admin(new_admin: AdminUpdateRequest, admin_id: UUID):
-    for user in db:
-        if user.id == admin_id:
-            if new_admin.firstName is not None:
-                user.firstName = new_admin.firstName
-            if new_admin.lastName is not None:
-                user.lastName = new_admin.lastName
-            if new_admin.email is not None:
-                user.email = new_admin.email
-            if new_admin.password is not None:
-                user.password = new_admin.password
-            if new_admin.gender is not None:
-                user.gender = new_admin.gender
-            return {"message": "user updated successfully"}
+async def update_admin( admin_id: str, admin: Admin):
+    new_admin = await modify_admin(admin_id, admin)
+    if new_admin: 
+        return new_admin
 
     raise HTTPException(
         status_code= 404,
