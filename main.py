@@ -3,6 +3,7 @@ from uuid import UUID
 from fastapi import FastAPI, HTTPException
 from schemas.skill import Skill
 from schemas.admin import Admin, Gender
+from schemas.experience import Experience
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 
@@ -20,6 +21,12 @@ from repository.skillRepository import (
     fetch_all_skills,
     add_skill,
     delete_skill
+)
+
+from repository.experienceRepository import (
+    add_new_experience,
+    fetch_all_experience,
+    delete_experience
 )
 
 
@@ -99,6 +106,7 @@ async def get_admin_by_id(admin_id: str):
         detail= f"user with id: {admin_id} does not exists"
     )
 
+# delete an admin
 @app.delete("/api/admins/{admin_id}")
 async def delete_existing_admin(admin_id: str):
     response = await delete_admin(admin_id)
@@ -110,11 +118,13 @@ async def delete_existing_admin(admin_id: str):
         detail= f"user with id: {admin_id} does not exists"
     )
 
+# Get all skills
 @app.get("/api/skills")
 async def get_all_skills():
     response = await fetch_all_skills()
     return response
 
+# Add a new skill
 @app.post("/api/skills")
 async def add_new_skill(skill: Skill):
     document = jsonable_encoder(skill)
@@ -128,6 +138,7 @@ async def add_new_skill(skill: Skill):
         detail= "could not add the skill"
     ) 
 
+# Delete a skill
 @app.delete("/api/skills/{skill_id}")
 async def delete_existing_skill(skill_id: str):
     response = await delete_skill(skill_id)
@@ -139,3 +150,34 @@ async def delete_existing_skill(skill_id: str):
         detail= "could not delete the skill"
     ) 
 
+# Add new experience
+@app.post("/api/experience")
+async def create_experience(experience: Experience):
+    document = jsonable_encoder(experience)
+    new_experience = await add_new_experience(document)
+
+    if new_experience is not None: 
+        return {"message": "Experience added successfully"}
+    
+    raise HTTPException(
+        status_code= 404,
+        detail= "could not add the skill"
+    ) 
+
+# Get all experiences
+@app.get("/api/experience")
+async def get_all_experience():
+    experiences = await fetch_all_experience()
+    return experiences
+
+# Delte an existing experience
+@app.delete("/api/experience")
+async def delete_existing_experience(experience_id: str):
+    experience = await delete_experience(experience_id)
+    if experience is not None:
+        return {"message": "Experience was deleted successfully"}
+
+    raise HTTPException(
+        status_code= 404,
+        detail= "could not delete the skill"
+    )
