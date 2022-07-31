@@ -11,7 +11,6 @@ def admin_helper(admin) -> dict:
         "firstName": admin["firstName"],
         "lastName": admin["lastName"],
         "email": admin["email"],
-        "password": admin["password"],
         "gender": admin["gender"],
     }
 
