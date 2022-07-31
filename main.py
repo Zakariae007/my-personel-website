@@ -1,7 +1,8 @@
 from typing import List
 from uuid import UUID
 from fastapi import FastAPI, HTTPException
-from models import Admin, Gender, Skill
+from models import Skill
+from schemas.admin import Admin, Gender
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 
@@ -32,24 +33,24 @@ app.add_middleware(
     allow_headers = ["*"]
 )
 
-db: List[Admin] = [
-    Admin(
-        id= "62dbf33237547ddcc00ca9ba",
-        firstName= "Zakariae", 
-        lastName= "Barakat", 
-        email= "Zakariae.barakat@gmail.com", 
-        password= "Zakariae", 
-        gender= Gender.male, 
-    ),
-    Admin(
-        id= "96dbf33237547ddcc00ca9ba",
-        firstName= "test", 
-        lastName= "test", 
-        email= "test@gmail.com", 
-        password= "test", 
-        gender= Gender.female, 
-    )
-]
+# db: List[Admin] = [
+#     Admin(
+#         id= "62dbf33237547ddcc00ca9ba",
+#         firstName= "Zakariae", 
+#         lastName= "Barakat", 
+#         email= "Zakariae.barakat@gmail.com", 
+#         password= "Zakariae", 
+#         gender= Gender.male, 
+#     ),
+#     Admin(
+#         id= "96dbf33237547ddcc00ca9ba",
+#         firstName= "test", 
+#         lastName= "test", 
+#         email= "test@gmail.com", 
+#         password= "test", 
+#         gender= Gender.female, 
+#     )
+# ]
 
 @app.get("/")
 def root(): 

@@ -1,4 +1,4 @@
-from models import Admin
+from schemas.admin import Admin
 from database import connect_db
 from bson.objectid import ObjectId
 
