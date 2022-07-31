@@ -1,14 +1,14 @@
 from typing import List
 from uuid import UUID
 from fastapi import FastAPI, HTTPException
-from models import Skill
+from schemas.skill import Skill
 from schemas.admin import Admin, Gender
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 
 app = FastAPI()
 
-from adminRepository import (
+from repository.adminRepository import (
     fetch_one_admin,
     fetch_all_admins,
     register_admin,
@@ -16,7 +16,7 @@ from adminRepository import (
     delete_admin
 )
 
-from skillRepository import (
+from repository.skillRepository import (
     fetch_all_skills,
     add_skill,
     delete_skill
