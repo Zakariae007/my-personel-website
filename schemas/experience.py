@@ -19,5 +19,6 @@ class createdExperience(Experience):
     title: str
     type: Type
     company : str
-    duration : str
+    startDate: date
+    endDate: date
 
