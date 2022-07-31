@@ -26,7 +26,8 @@ from repository.skillRepository import (
 from repository.experienceRepository import (
     add_new_experience,
     fetch_all_experience,
-    delete_experience
+    delete_experience,
+    modify_experience
 )
 
 
@@ -161,7 +162,7 @@ async def create_experience(experience: Experience):
     
     raise HTTPException(
         status_code= 404,
-        detail= "could not add the skill"
+        detail= "could not add the experience"
     ) 
 
 # Get all experiences
@@ -179,5 +180,19 @@ async def delete_existing_experience(experience_id: str):
 
     raise HTTPException(
         status_code= 404,
-        detail= "could not delete the skill"
+        detail= "could not delete the experience"
     )
+
+# Update an existing experience
+@app.put("/api/experience/{experience_id}")
+async def delete_existing_experience(experience_id: str, data: Experience):
+    experience = await modify_experience(experience_id, data)
+    if experience is not None:
+        return {"message": "Experience was updated successfully"}
+
+    raise HTTPException(
+        status_code= 404,
+        detail= "could not update the experience"
+    )
+
+
