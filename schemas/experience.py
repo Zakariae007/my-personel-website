@@ -13,6 +13,7 @@ class Experience(BaseModel):
     company : str = Field(...)
     startDate : date = Field(...)
     endDate : date = Field(...)
+    description : str = Field(...)
 
 
 class createdExperience(Experience):
@@ -21,4 +22,4 @@ class createdExperience(Experience):
     company : str
     startDate: date
     endDate: date
-
+    description : str

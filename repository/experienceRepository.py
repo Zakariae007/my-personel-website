@@ -31,3 +31,9 @@ async def delete_experience(experience_id: str):
     if found_experience:
         experience = await Experiences_collection.delete_one({"_id": ObjectId(experience_id)})
         return experience
+
+async def modify_experience(experience_id: str, experience: Experience):
+    found_experience = await Experiences_collection.find_one({"_id": ObjectId(experience_id)})
+    if found_experience: 
+        modified_experience = await Experiences_collection.update_one({"_id": ObjectId(experience_id)}, {"$set": experience})
+        return modified_experience
